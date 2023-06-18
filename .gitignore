@@ -1,0 +1,9 @@
+# Intellij files
+*.iml
+.idea/
+
+# VSCode files
+.vscode/
+
+# Class files
+*.class

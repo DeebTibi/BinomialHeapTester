@@ -26,7 +26,7 @@ public class MainTester {
         BinomialHeap.HeapItem it2 = bh.insert(1, null);
         bh.delete(it2);
         bh.delete(it1);
-        Assertions.assertEquals(1, bh.numTrees(), "Number of roots should be equal to 1");
+        Assertions.assertEquals(1, bh.numTrees(), "Number of Trees  should be equal to 1");
     }
 
     @Test
@@ -38,7 +38,7 @@ public class MainTester {
             Arrays.setAll(array, i -> i + 1);
             BinomialHeap bh = BinomialHeapUtils.createBinomialHeapFromInsertions(array);
             Assertions.assertEquals((int) (Math.log(m) / Math.log(2)) + 1, bh.numTrees(),
-                    "Should be equal to log(n) where n is a perfect power of 2.");
+                    "Number of Trees Should be equal to log(n) where n is a perfect power of 2.");
         }
     }
 
@@ -51,7 +51,7 @@ public class MainTester {
             Arrays.setAll(array, i -> i + 1);
             BinomialHeap bh = BinomialHeapUtils.createBinomialHeapFromInsertions(array);
             Assertions.assertEquals(1, bh.numTrees(),
-                    "Should be equal to 1");
+                    "Number of Trees Should be equal to 1");
         }
     }
 
@@ -61,7 +61,7 @@ public class MainTester {
         int[] array = new int[67];
         Arrays.setAll(array, i -> i + 1);
         BinomialHeap bh = BinomialHeapUtils.createBinomialHeapFromInsertions(array);
-        Assertions.assertEquals(3, bh.numTrees(), "Should be equal to 1");
+        Assertions.assertEquals(3, bh.numTrees(), "Number of Trees Should be equal to 3");
     }
 
     @Test
@@ -70,14 +70,14 @@ public class MainTester {
         int[] array = new int[1365];
         Arrays.setAll(array, i -> i + 1);
         BinomialHeap bh = BinomialHeapUtils.createBinomialHeapFromInsertions(array);
-        Assertions.assertEquals(6, bh.numTrees(), "Should be equal to 1");
+        Assertions.assertEquals(6, bh.numTrees(), "Number of Trees Should be equal to 6");
     }
 
     @Test
     @DisplayName("should be 0")
     public void test7() {
         BinomialHeap bh = new BinomialHeap();
-        Assertions.assertEquals(0, bh.size());
+        Assertions.assertEquals(0, bh.size(), "Size of empty tree should be 0");
     }
 
     @Test
@@ -227,17 +227,17 @@ public class MainTester {
         Assertions.assertEquals(1, bh.size());
         Assertions.assertNotNull(bh.min);
         Assertions.assertNotNull(bh.last);
-        Assertions.assertEquals("0", bh.min.item.info);
-        Assertions.assertEquals("0", bh.last.item.info);
+        Assertions.assertEquals("0", bh.min.item.info, "Min is not updated");
+        Assertions.assertEquals("0", bh.last.item.info, "Last is not updated");
 
         bh.deleteMin();
-        Assertions.assertTrue(bh.size() == 0);
+        Assertions.assertTrue(bh.size() == 0, "The tree size should be 0");
 
         bh.insert(0, "0");
         BinomialHeap.HeapItem x = bh.insert(1, "1");
         bh.insert(2, "2");
-        Assertions.assertNotNull(bh.min);
-        Assertions.assertNotNull(bh.last);
+        Assertions.assertNotNull(bh.min, "Min shouldn't be null");
+        Assertions.assertNotNull(bh.last, "Last shouldnt be null");
         Assertions.assertEquals(2, bh.numTrees());
         Assertions.assertEquals(0, bh.last.next.rank);
         Assertions.assertEquals(2, bh.last.next.item.key);
@@ -345,7 +345,7 @@ public class MainTester {
     @DisplayName("Focuses on verifying tree structure after trick deletes")
     @Test
     public void test17() {
-        int[] insertions = { 1, 2, 3, 4, 0, -1, -2, 5 };
+        int[] insertions = { 5, 6, 7, 8, 4, 3, 2, 11 };
         HashMap<Integer, BinomialHeap.HeapItem> keyToNode = new HashMap<>();
         BinomialHeap bh = new BinomialHeap();
         for (int i : insertions) {
@@ -358,39 +358,39 @@ public class MainTester {
         Assertions.assertNotNull(bh.last);
         Assertions.assertNotNull(bh.min);
         Assertions.assertEquals(0, bh.last.next.rank);
-        Assertions.assertEquals(5, bh.last.next.item.key);
+        Assertions.assertEquals(11, bh.last.next.item.key);
         Assertions.assertEquals(1, bh.last.next.next.rank);
-        Assertions.assertEquals(-1, bh.last.next.next.item.key);
-        Assertions.assertEquals(0, bh.last.next.next.child.item.key);
+        Assertions.assertEquals(2, bh.last.next.next.item.key);
+        Assertions.assertEquals(3, bh.last.next.next.child.item.key);
         Assertions.assertSame(bh.last, bh.last.next.next.next);
         Assertions.assertEquals(2, bh.last.rank);
-        Assertions.assertEquals(-2, bh.last.item.key);
+        Assertions.assertEquals(5, bh.last.item.key);
         Assertions.assertEquals(1, bh.last.child.rank);
-        Assertions.assertEquals(1, bh.last.child.item.key);
-        Assertions.assertEquals(3, bh.last.child.child.item.key);
-        Assertions.assertEquals(2, bh.last.child.next.item.key);
+        Assertions.assertEquals(7, bh.last.child.item.key);
+        Assertions.assertEquals(8, bh.last.child.child.item.key);
+        Assertions.assertEquals(6, bh.last.child.next.item.key);
 
-        bh.delete(keyToNode.get(3));
+        bh.delete(keyToNode.get(8));
         Assertions.assertEquals(2, bh.numTrees());
         Assertions.assertNotNull(bh.last);
         Assertions.assertNotNull(bh.min);
         Assertions.assertEquals(1, bh.last.next.rank);
-        Assertions.assertEquals(2, bh.last.next.item.key);
-        Assertions.assertEquals(5, bh.last.next.child.item.key);
+        Assertions.assertEquals(6, bh.last.next.item.key);
+        Assertions.assertEquals(11, bh.last.next.child.item.key);
         Assertions.assertSame(bh.last, bh.last.next.next);
-        Assertions.assertEquals(-2, bh.last.item.key);
-        Assertions.assertEquals(-1, bh.last.child.item.key);
+        Assertions.assertEquals(2, bh.last.item.key);
+        Assertions.assertEquals(5, bh.last.child.item.key);
         Assertions.assertEquals(1, bh.last.child.rank);
-        Assertions.assertEquals(0, bh.last.child.child.item.key);
-        Assertions.assertEquals(1, bh.last.child.next.item.key);
+        Assertions.assertEquals(7, bh.last.child.child.item.key);
+        Assertions.assertEquals(3, bh.last.child.next.item.key);
         Assertions.assertEquals(0, bh.last.child.next.rank);
-        Assertions.assertEquals(-2, bh.min.item.key);
+        Assertions.assertEquals(2, bh.min.item.key);
 
         Assertions.assertDoesNotThrow(() -> {
             bh.deleteMin();
         }, "delete min resulted into an exception");
 
-        Assertions.assertEquals(-1, bh.min.item.key);
+        Assertions.assertEquals(3, bh.min.item.key);
 
         Assertions.assertDoesNotThrow(() -> {
             bh.deleteMin();
@@ -415,7 +415,7 @@ public class MainTester {
     @DisplayName("Checking preservation of tree values after a sequence of insert and delete")
     @Test
     public void test18() {
-        int[] insertions = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, -1, -2, -3, -4 };
+        int[] insertions = { 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 4, 3, 2, 1, 0 };
         BinomialHeap bh = new BinomialHeap();
 
         for (int i : insertions) {

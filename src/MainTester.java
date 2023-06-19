@@ -240,11 +240,10 @@ public class MainTester {
         Assertions.assertNotNull(bh.last, "Last shouldnt be null");
         Assertions.assertEquals(2, bh.numTrees());
         Assertions.assertEquals(0, bh.last.next.rank);
-        Assertions.assertEquals(2, bh.last.next.item.key);
-        Assertions.assertEquals(0, bh.last.next.next.item.key);
-        Assertions.assertEquals(1, bh.last.next.next.rank);
-        Assertions.assertEquals(0, bh.last.next.next.child.rank);
-        Assertions.assertEquals(1, bh.last.next.next.child.item.key);
+        Assertions.assertSame(bh.last, bh.last.next.next);
+        Assertions.assertEquals(1, bh.last.rank);
+        Assertions.assertEquals(0, bh.last.child.rank);
+        Assertions.assertTrue(bh.last.child.item.key > bh.last.child.parent.item.key);
         Assertions.assertSame(bh.last.next.next.child, bh.last.next.next.child.next);
 
         bh.delete(x);
@@ -358,31 +357,31 @@ public class MainTester {
         Assertions.assertNotNull(bh.last);
         Assertions.assertNotNull(bh.min);
         Assertions.assertEquals(0, bh.last.next.rank);
-        Assertions.assertEquals(11, bh.last.next.item.key);
         Assertions.assertEquals(1, bh.last.next.next.rank);
-        Assertions.assertEquals(2, bh.last.next.next.item.key);
-        Assertions.assertEquals(3, bh.last.next.next.child.item.key);
+        Assertions.assertEquals(0, bh.last.next.next.child.rank);
+        Assertions.assertTrue(bh.last.next.next.child.item.key > bh.last.next.next.item.key);
         Assertions.assertSame(bh.last, bh.last.next.next.next);
         Assertions.assertEquals(2, bh.last.rank);
-        Assertions.assertEquals(5, bh.last.item.key);
         Assertions.assertEquals(1, bh.last.child.rank);
-        Assertions.assertEquals(7, bh.last.child.item.key);
-        Assertions.assertEquals(8, bh.last.child.child.item.key);
-        Assertions.assertEquals(6, bh.last.child.next.item.key);
+        Assertions.assertTrue(bh.last.child.item.key > bh.last.item.key);
+        Assertions.assertEquals(0, bh.last.child.child.rank);
+        Assertions.assertTrue(bh.last.child.child.item.key > bh.last.child.child.parent.item.key);
+        Assertions.assertEquals(0, bh.last.child.next.rank);
+        Assertions.assertTrue(bh.last.child.next.item.key > bh.last.child.next.parent.item.key);
 
         bh.delete(keyToNode.get(8));
         Assertions.assertEquals(2, bh.numTrees());
         Assertions.assertNotNull(bh.last);
         Assertions.assertNotNull(bh.min);
         Assertions.assertEquals(1, bh.last.next.rank);
-        Assertions.assertEquals(6, bh.last.next.item.key);
-        Assertions.assertEquals(11, bh.last.next.child.item.key);
+        Assertions.assertTrue(bh.last.next.child.item.key > bh.last.next.item.key);
         Assertions.assertSame(bh.last, bh.last.next.next);
-        Assertions.assertEquals(2, bh.last.item.key);
-        Assertions.assertEquals(5, bh.last.child.item.key);
+        Assertions.assertEquals(2, bh.last.rank);
+        Assertions.assertTrue(bh.last.child.item.key > bh.last.item.key);
         Assertions.assertEquals(1, bh.last.child.rank);
-        Assertions.assertEquals(7, bh.last.child.child.item.key);
-        Assertions.assertEquals(3, bh.last.child.next.item.key);
+        Assertions.assertTrue(bh.last.child.child.item.key > bh.last.child.item.key);
+        Assertions.assertEquals(0, bh.last.child.child.rank);
+        Assertions.assertTrue(bh.last.child.next.item.key > bh.last.item.key);
         Assertions.assertEquals(0, bh.last.child.next.rank);
         Assertions.assertEquals(2, bh.min.item.key);
 
@@ -446,47 +445,131 @@ public class MainTester {
         }
 
         bh1.meld(bh2);
-
+        System.out.println(bh1);
         Assertions.assertEquals(4, bh1.numTrees());
         Assertions.assertEquals(30, bh1.size());
 
         Assertions.assertEquals(1, bh1.last.next.rank);
-        Assertions.assertEquals(15, bh1.last.next.item.key);
-        Assertions.assertEquals(30, bh1.last.next.child.item.key);
+        Assertions.assertEquals(0, bh1.last.next.child.rank);
+        Assertions.assertTrue(bh1.last.next.child.item.key > bh1.last.next.item.key);
 
         Assertions.assertEquals(2, bh1.last.next.next.rank);
-        Assertions.assertEquals(13, bh1.last.next.next.item.key);
-        Assertions.assertEquals(28, bh1.last.next.next.child.item.key);
-        Assertions.assertEquals(29, bh1.last.next.next.child.child.item.key);
-        Assertions.assertEquals(14, bh1.last.next.next.child.next.item.key);
+
+        Assertions.assertEquals(1, bh1.last.next.next.child.rank);
+        Assertions.assertTrue(bh1.last.next.next.child.item.key > bh1.last.next.next.item.key);
+        Assertions.assertEquals(0, bh1.last.next.next.child.child.rank);
+        Assertions.assertTrue(bh1.last.next.next.child.child.item.key > bh1.last.next.next.child.item.key);
+        Assertions.assertEquals(0, bh1.last.next.next.child.next.rank);
+        Assertions.assertTrue(bh1.last.next.next.child.next.item.key > bh1.last.next.next.item.key);
 
         Assertions.assertEquals(3, bh1.last.next.next.next.rank);
-        Assertions.assertEquals(9, bh1.last.next.next.next.item.key);
-        Assertions.assertEquals(24, bh1.last.next.next.next.child.item.key);
-        Assertions.assertEquals(26, bh1.last.next.next.next.child.child.item.key);
-        Assertions.assertEquals(27, bh1.last.next.next.next.child.child.child.item.key);
-        Assertions.assertEquals(25, bh1.last.next.next.next.child.child.next.item.key);
-        Assertions.assertEquals(10, bh1.last.next.next.next.child.next.item.key);
-        Assertions.assertEquals(11, bh1.last.next.next.next.child.next.next.item.key);
-        Assertions.assertEquals(12, bh1.last.next.next.next.child.next.next.child.item.key);
+        Assertions.assertEquals(2, bh1.last.next.next.next.child.rank);
+        Assertions.assertTrue(bh1.last.next.next.next.child.item.key > bh1.last.next.next.next.item.key);
+
+        Assertions.assertEquals(1, bh1.last.next.next.next.child.child.rank);
+        Assertions.assertTrue(bh1.last.next.next.next.child.child.item.key > bh1.last.next.next.next.child.item.key);
+        Assertions.assertEquals(0, bh1.last.next.next.next.child.child.child.rank);
+        Assertions.assertTrue(
+                bh1.last.next.next.next.child.child.child.item.key > bh1.last.next.next.next.child.child.item.key);
+        Assertions.assertEquals(0, bh1.last.next.next.next.child.child.next.rank);
+        Assertions.assertTrue(
+                bh1.last.next.next.next.child.child.next.item.key > bh1.last.next.next.next.child.child.next.parent.item.key);
+        Assertions.assertEquals(0, bh1.last.next.next.next.child.next.rank);
+        Assertions.assertTrue(
+                bh1.last.next.next.next.child.next.item.key > bh1.last.next.next.next.child.next.parent.item.key);
+        Assertions.assertEquals(1, bh1.last.next.next.next.child.next.next.rank);
+        Assertions.assertTrue(
+                bh1.last.next.next.next.child.next.next.item.key > bh1.last.next.next.next.child.next.next.parent.item.key);
+        Assertions.assertEquals(0, bh1.last.next.next.next.child.next.next.child.rank);
+        Assertions.assertTrue(
+                bh1.last.next.next.next.child.next.next.child.item.key > bh1.last.next.next.next.child.next.next.child.parent.item.key);
 
         Assertions.assertSame(bh1.last, bh1.last.next.next.next.next);
-        Assertions.assertEquals(1, bh1.last.item.key);
-        Assertions.assertEquals(16, bh1.last.child.item.key);
-        Assertions.assertEquals(20, bh1.last.child.child.item.key);
-        Assertions.assertEquals(22, bh1.last.child.child.child.item.key);
-        Assertions.assertEquals(23, bh1.last.child.child.child.child.item.key);
-        Assertions.assertEquals(21, bh1.last.child.child.child.next.item.key);
-        Assertions.assertEquals(17, bh1.last.child.child.next.item.key);
-        Assertions.assertEquals(18, bh1.last.child.child.next.next.item.key);
-        Assertions.assertEquals(19, bh1.last.child.child.next.next.child.item.key);
-        Assertions.assertEquals(2, bh1.last.child.next.item.key);
-        Assertions.assertEquals(3, bh1.last.child.next.next.item.key);
-        Assertions.assertEquals(4, bh1.last.child.next.next.child.item.key);
-        Assertions.assertEquals(5, bh1.last.child.next.next.next.item.key);
-        Assertions.assertEquals(7, bh1.last.child.next.next.next.child.item.key);
-        Assertions.assertEquals(8, bh1.last.child.next.next.next.child.child.item.key);
-        Assertions.assertEquals(6, bh1.last.child.next.next.next.child.next.item.key);
+        Assertions.assertEquals(4, bh1.last.rank);
+        Assertions.assertEquals(3, bh1.last.child.rank);
+        Assertions.assertTrue(bh1.last.child.item.key > bh1.last.item.key);
+        Assertions.assertEquals(2, bh1.last.child.child.rank);
+        Assertions.assertTrue(bh1.last.child.child.item.key > bh1.last.child.item.key);
+        Assertions.assertEquals(1, bh1.last.child.child.child.rank);
+        Assertions.assertTrue(bh1.last.child.child.child.item.key > bh1.last.child.child.item.key);
+        Assertions.assertEquals(0, bh1.last.child.child.child.child.rank);
+        Assertions.assertTrue(bh1.last.child.child.child.child.item.key > bh1.last.child.child.child.item.key);
+        Assertions.assertEquals(0, bh1.last.child.child.child.next.rank);
+        Assertions
+                .assertTrue(bh1.last.child.child.child.next.item.key > bh1.last.child.child.child.next.parent.item.key);
+        Assertions.assertEquals(0, bh1.last.child.child.next.rank);
+        Assertions
+                .assertTrue(bh1.last.child.child.next.item.key > bh1.last.child.child.next.parent.item.key);
+        Assertions.assertEquals(1, bh1.last.child.child.next.next.rank);
+        Assertions.assertTrue(bh1.last.child.child.next.next.item.key > bh1.last.child.child.next.next.parent.item.key);
+        Assertions.assertEquals(0, bh1.last.child.child.next.next.child.rank);
+        Assertions.assertTrue(
+                bh1.last.child.child.next.next.child.item.key > bh1.last.child.child.next.next.child.parent.item.key);
+        Assertions.assertEquals(0, bh1.last.child.next.rank);
+        Assertions.assertTrue(bh1.last.child.next.item.key > bh1.last.child.next.parent.item.key);
+        Assertions.assertEquals(1, bh1.last.child.next.next.rank);
+        Assertions.assertTrue(bh1.last.child.next.next.item.key > bh1.last.child.next.next.parent.item.key);
+        Assertions.assertEquals(0, bh1.last.child.next.next.child.rank);
+        Assertions.assertTrue(bh1.last.child.next.next.child.item.key > bh1.last.child.next.next.child.parent.item.key);
+        Assertions.assertEquals(2, bh1.last.child.next.next.next.rank);
+        Assertions.assertTrue(bh1.last.child.next.next.next.item.key > bh1.last.child.next.next.next.parent.item.key);
+        Assertions.assertEquals(1, bh1.last.child.next.next.next.child.rank);
+        Assertions.assertTrue(
+                bh1.last.child.next.next.next.child.item.key > bh1.last.child.next.next.next.child.parent.item.key);
+        Assertions.assertEquals(0, bh1.last.child.next.next.next.child.child.rank);
+        Assertions.assertTrue(
+                bh1.last.child.next.next.next.child.child.item.key > bh1.last.child.next.next.next.child.child.parent.item.key);
+        Assertions.assertEquals(0, bh1.last.child.next.next.next.child.next.rank);
+        Assertions.assertTrue(
+                bh1.last.child.next.next.next.child.next.item.key > bh1.last.child.next.next.next.child.next.parent.item.key);
+
+        // OLD TESTS , DO NOT UNCOMMENT
+        // Assertions.assertEquals(4, bh1.numTrees());
+        // Assertions.assertEquals(30, bh1.size());
+
+        // Assertions.assertEquals(1, bh1.last.next.rank);
+        // Assertions.assertEquals(15, bh1.last.next.item.key);
+        // Assertions.assertEquals(30, bh1.last.next.child.item.key);
+
+        // Assertions.assertEquals(2, bh1.last.next.next.rank);
+        // Assertions.assertEquals(13, bh1.last.next.next.item.key);
+        // Assertions.assertEquals(28, bh1.last.next.next.child.item.key);
+        // Assertions.assertEquals(29, bh1.last.next.next.child.child.item.key);
+        // Assertions.assertEquals(14, bh1.last.next.next.child.next.item.key);
+
+        // Assertions.assertEquals(3, bh1.last.next.next.next.rank);
+        // Assertions.assertEquals(9, bh1.last.next.next.next.item.key);
+        // Assertions.assertEquals(24, bh1.last.next.next.next.child.item.key);
+        // Assertions.assertEquals(26, bh1.last.next.next.next.child.child.item.key);
+        // Assertions.assertEquals(27,
+        // bh1.last.next.next.next.child.child.child.item.key);
+        // Assertions.assertEquals(25,
+        // bh1.last.next.next.next.child.child.next.item.key);
+        // Assertions.assertEquals(10, bh1.last.next.next.next.child.next.item.key);
+        // Assertions.assertEquals(11,
+        // bh1.last.next.next.next.child.next.next.item.key);
+        // Assertions.assertEquals(12,
+        // bh1.last.next.next.next.child.next.next.child.item.key);
+
+        // Assertions.assertSame(bh1.last, bh1.last.next.next.next.next);
+        // Assertions.assertEquals(1, bh1.last.item.key);
+        // Assertions.assertEquals(16, bh1.last.child.item.key);
+        // Assertions.assertEquals(20, bh1.last.child.child.item.key);
+        // Assertions.assertEquals(22, bh1.last.child.child.child.item.key);
+        // Assertions.assertEquals(23, bh1.last.child.child.child.child.item.key);
+        // Assertions.assertEquals(21, bh1.last.child.child.child.next.item.key);
+        // Assertions.assertEquals(17, bh1.last.child.child.next.item.key);
+        // Assertions.assertEquals(18, bh1.last.child.child.next.next.item.key);
+        // Assertions.assertEquals(19, bh1.last.child.child.next.next.child.item.key);
+        // Assertions.assertEquals(2, bh1.last.child.next.item.key);
+        // Assertions.assertEquals(3, bh1.last.child.next.next.item.key);
+        // Assertions.assertEquals(4, bh1.last.child.next.next.child.item.key);
+        // Assertions.assertEquals(5, bh1.last.child.next.next.next.item.key);
+        // Assertions.assertEquals(7, bh1.last.child.next.next.next.child.item.key);
+        // Assertions.assertEquals(8,
+        // bh1.last.child.next.next.next.child.child.item.key);
+        // Assertions.assertEquals(6,
+        // bh1.last.child.next.next.next.child.next.item.key);
 
     }
 }

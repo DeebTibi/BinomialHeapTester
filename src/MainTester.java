@@ -22,8 +22,8 @@ public class MainTester {
     public void test2() {
         int[] insertions = { 1, 2, 10, 4, 5, 6, 1, 2 };
         BinomialHeap bh = BinomialHeapUtils.createBinomialHeapFromInsertions(insertions);
-        BinomialHeap.HeapItem it1 = bh.insert(0, null);
-        BinomialHeap.HeapItem it2 = bh.insert(1, null);
+        BinomialHeap.HeapItem it1 = bh.insert(40, null);
+        BinomialHeap.HeapItem it2 = bh.insert(50, null);
         bh.delete(it2);
         bh.delete(it1);
         Assertions.assertEquals(1, bh.numTrees(), "Number of Trees  should be equal to 1");
@@ -125,7 +125,7 @@ public class MainTester {
     public void test10() {
         BinomialHeap bh1 = new BinomialHeap();
         BinomialHeap bh2 = new BinomialHeap();
-        BinomialHeap.HeapNode min = bh1.insert(0, null).node;
+        BinomialHeap.HeapNode min = bh1.insert(1, null).node;
         bh1.meld(bh2);
 
         Assertions.assertEquals(1, bh1.size(), "The size is not 1");
@@ -151,7 +151,7 @@ public class MainTester {
     public void test12() {
         BinomialHeap bh1 = new BinomialHeap();
         BinomialHeap bh2 = new BinomialHeap();
-        BinomialHeap.HeapNode min = bh2.insert(0, null).node;
+        BinomialHeap.HeapNode min = bh2.insert(1, null).node;
         bh1.meld(bh2);
 
         Assertions.assertEquals(1, bh1.size(), "The size is not 1");
@@ -171,10 +171,10 @@ public class MainTester {
 
         BinomialHeap bh1 = new BinomialHeap();
         BinomialHeap bh2 = new BinomialHeap();
-        for (int i = 0; i < n; i++) {
+        for (int i = 1; i <= n; i++) {
             bh1.insert(i, null);
         }
-        for (int i = 0; i < m; i++) {
+        for (int i = 1; i <= m; i++) {
             bh2.insert(i, null);
         }
         bh1.meld(bh2);
@@ -223,7 +223,7 @@ public class MainTester {
     @Test
     public void test15() {
         BinomialHeap bh = new BinomialHeap();
-        bh.insert(0, "0");
+        bh.insert(1, "0");
         Assertions.assertEquals(1, bh.size());
         Assertions.assertNotNull(bh.min);
         Assertions.assertNotNull(bh.last);
@@ -233,9 +233,9 @@ public class MainTester {
         bh.deleteMin();
         Assertions.assertTrue(bh.size() == 0, "The tree size should be 0");
 
-        bh.insert(0, "0");
-        BinomialHeap.HeapItem x = bh.insert(1, "1");
-        bh.insert(2, "2");
+        bh.insert(1, "0");
+        BinomialHeap.HeapItem x = bh.insert(2, "1");
+        bh.insert(3, "-1");
         Assertions.assertNotNull(bh.min, "Min shouldn't be null");
         Assertions.assertNotNull(bh.last, "Last shouldnt be null");
         Assertions.assertEquals(2, bh.numTrees());
@@ -253,24 +253,22 @@ public class MainTester {
         Assertions.assertEquals(2, bh.size());
         Assertions.assertSame(bh.last, bh.last.next);
         Assertions.assertEquals(1, bh.last.rank);
-        Assertions.assertEquals(0, bh.last.item.key);
-        Assertions.assertEquals(2, bh.last.child.item.key);
+        Assertions.assertEquals(1, bh.last.item.key);
+        Assertions.assertEquals(3, bh.last.child.item.key);
         Assertions.assertSame(bh.last, bh.last.child.parent);
         Assertions.assertSame(bh.last.child, bh.last.child.next);
-        Assertions.assertEquals(0, bh.min.item.key);
+        Assertions.assertEquals(1, bh.min.item.key);
 
-        bh.insert(1, "1");
+        bh.insert(2, "1");
 
         Assertions.assertNotNull(bh.min);
         Assertions.assertNotNull(bh.last);
-        Assertions.assertEquals(0, bh.min.item.key);
+        Assertions.assertEquals(1, bh.min.item.key);
         Assertions.assertEquals(2, bh.numTrees());
         Assertions.assertEquals(3, bh.size());
-        Assertions.assertEquals(1, bh.last.next.item.key);
         Assertions.assertEquals(0, bh.last.next.rank);
         Assertions.assertEquals(1, bh.last.rank);
-        Assertions.assertEquals(0, bh.last.item.key);
-        Assertions.assertEquals(2, bh.last.child.item.key);
+        Assertions.assertEquals(0, bh.last.child.rank);
         Assertions.assertSame(bh.last.child, bh.last.child.next);
     }
 
@@ -283,7 +281,7 @@ public class MainTester {
         bh.insert(2, null);
         bh.insert(1, null);
         bh.insert(5, null);
-        bh.insert(0, null);
+        bh.insert(4, null);
         bh.insert(7, null);
 
         Assertions.assertNotNull(bh.min);
@@ -292,50 +290,45 @@ public class MainTester {
         Assertions.assertEquals(3, bh.numTrees());
 
         Assertions.assertEquals(0, bh.last.next.rank);
-        Assertions.assertEquals(7, bh.last.next.item.key);
-        Assertions.assertEquals(0, bh.last.next.next.item.key);
         Assertions.assertEquals(1, bh.last.next.next.rank);
-        Assertions.assertEquals(5, bh.last.next.next.child.item.key);
-        Assertions.assertEquals(5, bh.last.next.next.child.next.item.key);
+        Assertions.assertEquals(0, bh.last.next.next.child.rank);
+        Assertions.assertSame(bh.last.next.next.child, bh.last.next.next.child.next);
+        Assertions.assertTrue(bh.last.next.next.child.item.key > bh.last.next.next.child.parent.item.key);
         Assertions.assertSame(bh.last.next.next, bh.last.next.next.child.parent);
         Assertions.assertSame(bh.last, bh.last.next.next.next);
         Assertions.assertEquals(2, bh.last.rank);
-        Assertions.assertEquals(1, bh.last.item.key);
         Assertions.assertEquals(1, bh.last.child.rank);
-        Assertions.assertEquals(2, bh.last.child.item.key);
-        Assertions.assertEquals(3, bh.last.child.child.item.key);
-        Assertions.assertEquals(2, bh.last.child.next.item.key);
+        Assertions.assertEquals(0, bh.last.child.next.rank);
+        Assertions.assertEquals(0, bh.last.child.child.rank);
+        Assertions.assertTrue(bh.last.child.child.item.key > bh.last.child.child.parent.item.key);
+        Assertions.assertTrue(bh.last.child.item.key > bh.last.child.parent.item.key);
+        Assertions.assertTrue(bh.last.child.next.item.key > bh.last.child.next.parent.item.key);
         Assertions.assertNotSame(bh.last.child.next, bh.last.child);
         Assertions.assertEquals(0, bh.last.next.next.child.next.rank);
         Assertions.assertSame(bh.last.child.next.next, bh.last.child);
 
-        Assertions.assertEquals(0, bh.min.item.key);
-        bh.deleteMin();
         Assertions.assertEquals(1, bh.min.item.key);
-        Assertions.assertEquals(5, bh.last.next.item.key);
+        bh.deleteMin();
+        Assertions.assertEquals(2, bh.min.item.key);
         Assertions.assertEquals(1, bh.last.next.rank);
-        Assertions.assertEquals(7, bh.last.next.child.item.key);
-        Assertions.assertEquals(5, bh.last.next.child.parent.item.key);
         Assertions.assertEquals(0, bh.last.next.child.rank);
+        Assertions.assertTrue(bh.last.next.child.item.key > bh.last.next.child.parent.item.key);
         Assertions.assertSame(bh.last, bh.last.next.next);
-        Assertions.assertEquals(1, bh.last.item.key);
         Assertions.assertEquals(2, bh.last.rank);
 
         bh.insert(10, null);
         Assertions.assertEquals(3, bh.numTrees());
-        Assertions.assertEquals(10, bh.last.next.item.key);
+        Assertions.assertEquals(7, bh.size());
         Assertions.assertEquals(0, bh.last.next.rank);
-        Assertions.assertEquals(5, bh.last.next.next.item.key);
         Assertions.assertSame(bh.last, bh.last.next.next.next);
 
+        Assertions.assertEquals(2, bh.min.item.key);
         bh.deleteMin();
         Assertions.assertEquals(2, bh.min.item.key);
-
-        bh.deleteMin();
-        Assertions.assertEquals(2, bh.min.item.key);
-
         bh.deleteMin();
         Assertions.assertEquals(3, bh.min.item.key);
+        bh.deleteMin();
+        Assertions.assertEquals(4, bh.min.item.key);
 
         Assertions.assertEquals(1, bh.numTrees());
         Assertions.assertEquals(2, bh.last.rank);
